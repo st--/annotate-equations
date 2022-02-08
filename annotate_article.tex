@@ -1,0 +1,111 @@
+\documentclass{article}
+\usepackage[dvipsnames]{xcolor}
+% xcolor: e.g. provides \colorlet
+% dvipsnames option: extra named colours
+% see https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX for more detail
+
+% equation annotations also work in presentations, of course; you need to pass xcolor options to the class:
+% \documentclass[xcolor={dvipsnames,rgb},aspectratio=1610]{beamer}
+
+%%% standard math packages for equations:
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+%%% tikz & libraries
+\usepackage{tikz}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{arrows,shapes}
+\usetikzlibrary{tikzmark} % for \tikzmarknode
+\usetikzlibrary{calc} % for computing the midpoint between two nodes, e.g. at ($(p1.north)!0.5!(p2.north)$) 
+
+% Commands for Highlighting text -- non tikz method
+\newcommand{\highlight}[2]{\colorbox{#1!17}{$#2$}}
+\newcommand{\highlightdark}[2]{\colorbox{#1!47}{$#2$}}
+%%% NOTE: \colorbox sets the second argument in text mode, so for use within equations we wrap it in $ $ again
+% if you use \highlight or \highlightdark in subscripts, you need to pass \scriptstyle to get the font size right
+% e.g. $ \mathbb{E}_{\highlight{BurntOrange}{\scriptstyle y}} $
+
+\begin{document}
+
+\section*{Runtime complexity}
+    \LARGE %%% increase font size to make equation more readable!
+
+    %%% we define our own colors upfront - this makes it easier to keep it consistent if you change your mind
+    \colorlet{colorp}{NavyBlue}
+    \colorlet{colorT}{WildStrawberry}
+    \colorlet{colork}{OliveGreen}
+    \colorlet{colorM}{RoyalPurple}
+    \colorlet{colorNb}{Plum}
+    \colorlet{colorIs}{black}
+
+    \vspace*{3em} % make space for the annotations
+    \begin{equation*}
+        \mathcal{O}\big(
+            (
+            % \tikzmarknode is what links parts of the equation and corresponding annotations
+            \tikzmarknode{p1}{\highlight{colorp}{p}}
+            \tikzmarknode{k1}{\highlight{colork}{\kappa}}^3 % note that we have the ^3 outside the \tikzmarknode
+            )
+            \tikzmarknode{T1}{\highlight{colorT}{T}}
+            +
+            (
+            \tikzmarknode{p2}{\highlight{colorp}{p}} % tikzmarks need distinct names!
+            \tikzmarknode{k2}{\highlight{colork}{\kappa}}
+            )
+            (
+            \tikzmarknode{T2}{\highlight{colorT}{T}}^2
+            \tikzmarknode{Is}{{\color{colorIs}|\mathcal{I}^*|}}
+            \tikzmarknode{Nb}{\highlight{colorNb}{N_b}}
+            \tikzmarknode{M}{\highlight{colorM}{M}}
+            )
+        \big)
+    \end{equation*}
+    \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
+        % manually adjust \node's yshift until it's at appropriate distance above the equation
+        % can add xshift as well, if needed (also positive or negative)
+
+        % for "p":
+        % default anchor is at center
+        \node[color=colorp!85,yshift=0.9cm] (ptext)
+            at ($(p1.north)!0.5!(p2.north)$)  % centered between p1 and p2
+            {\textsf{\footnotesize \# of nodes}};
+    
+        % double arrow to two uses within the equation:
+        \draw [<->,color=colorp] (p1.north) |- (ptext.south) -| (p2.north);
+
+        % for "|I*|"
+        % anchor=west: align left edge of text on top of tikzmark in equation
+        % could also use anchor=north west or anchor=south west, and adjust yshift to make up for it
+        \node[anchor=west,color=colorIs!85,yshift=3em] (Istext) at (Is.north)
+            {\textsf{\footnotesize size of set of allowed interventions}};
+        \draw [color=colorIs](Is.north) |- ([xshift=-0.3ex,yshift=-0.2ex]Istext.south east);
+            % arrow from the equation; this one is above the equation: start at north anchor of tikzmark
+            % - south east: we want line to end at bottom right of text
+            % - negative xshift makes it a little bit shorter
+            % - negative yshift: manual adjustment for aesthetics
+
+        % for "N_b"
+        \node[anchor=north west,color=colorNb!85,yshift=1.5em] (Nbtext) at (Nb.north)
+            {\textsf{\footnotesize \# of samples per batch}};
+        \draw [color=colorNb](Nb.north) |- ([xshift=-0.3ex]Nbtext.south east); % south east: we want line to end at bottom right of text; negative xshift makes it a little bit shorter
+
+        % for "T"
+        % the xshift here is a manual adjustment so that the space between two words falls nicely on top of the line to the second \kappa
+        \node[anchor=north,color=colorT!85,yshift=-0.6cm,xshift=0.2ex] (Ttext) at ($(T1.south)!0.5!(T2.south)$)
+            {\textsf{\footnotesize \# of graphs in $\hat{\mathcal{G}}_T$}};
+        \draw [<->,color=colorT] (T1.south) |- (Ttext.south) -| (T2.south);
+
+        % for "\kappa"
+        \node[anchor=north,color=colork!85,yshift=-1.6cm] (ktext) at ($(k1.south)!0.5!(k2.south)$)
+            {\textsf{\footnotesize max.\ indegree in $\hat{\mathcal{G}}_T$}};
+        \draw [<->,color=colork] (k1.south) |- (ktext.south) -| (k2.south);
+
+        % for "M"
+        % a different way of getting the node in the right place:
+        \path (M.south) ++ (0,-3.5em) node[anchor=north west,color=colorM!85] (Mtext)
+            {\textsf{\footnotesize \# of samples for $\mathbb{E}_y$}};
+        \draw [color=colorM] (M.south) |- ([xshift=-0.3ex]Mtext.south east);
+    \end{tikzpicture}
+
+\end{document}
