@@ -18,4 +18,4 @@ Simply add a `\mathstrut` within the colorbox:
 
 ## Much more information...
 
-...in the answers to [this TeX StackExchange question}(https://tex.stackexchange.com/q/254844/171664).
+...in the answers to [this TeX StackExchange question](https://tex.stackexchange.com/q/254844/171664).
