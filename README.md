@@ -15,3 +15,7 @@ Simply add a `\mathstrut` within the colorbox:
 ```
 
 ![output of annotated equation with equal-height highlights](example_annotation_equal_height.png)
+
+## Much more information...
+
+...in the answers to [this TeX StackExchange question}(https://tex.stackexchange.com/q/254844/171664).
