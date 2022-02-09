@@ -48,21 +48,38 @@
 \def\addvalue#1#2{\expandafter\gdef\csname eqnannotate@data@#1\endcsname{#2}}
 \def\usevalue#1{\csname eqnannotate@data@#1\endcsname}
 
+\providecommand\EAanchor{north} % default set to "above"
+\providecommand\EAwesteast{east} % default set to "right"
 % for pgfkeys, see https://tex.stackexchange.com/a/34318/171664
+% for no-value keys, see https://tex.stackexchange.com/a/401848/171664
+\pgfkeys{
+    /eqnannotate/.is family, /eqnannotate,
+    above/.code = {\renewcommand\EAanchor{north}},
+    below/.code = {\renewcommand\EAanchor{south}},
+    left/.code = {\renewcommand\EAwesteast{west}},
+    right/.code = {\renewcommand\EAwesteast{east}},
+}
 
 \newcommand{\swapNorthSouth}[1]{%
     \ifnum\pdfstrcmp{#1}{south}=0 north\else south\fi
 }
+\newcommand{\swapWestEast}[1]{%
+    \ifnum\pdfstrcmp{#1}{east}=0 west\else east\fi
+}
+\newcommand{\EAxshift}[1]{%
+    \ifnum\pdfstrcmp{#1}{east}=0 -0.3ex\else 0.3ex\fi
+}
 
 % manually adjust \node's yshift until it's at appropriate distance above the equation
 % can add xshift as well, if needed (also positive or negative)
-\newcommand{\annotatetwoAt}[5]{%
+\newcommand{\annotatetwo}[5][]{%
     \bgroup% %%% so we don't leak the \def's below
     % #1: (optional) extra args for \node e.g. yshift=...
-    \def\myEAnodeOne{#2}%
-    \def\myEAnodeTwo{#3}%
-    \def\myEAtext{#4}%
-    \def\myEAanchor{#5}% %%% anchor for annotation text and line, should be "north" for above and "south" for below
+    \pgfkeys{/eqnannotate, #2}
+    \def\myEAanchor{\EAanchor}% %%% anchor for annotation text and line, should be "north" for above and "south" for below
+    \def\myEAnodeOne{#3}%
+    \def\myEAnodeTwo{#4}%
+    \def\myEAtext{#5}%
     \def\myEAcolor{\usevalue{\myEAnodeOne}}%
     \stepcounter{eqnannotatenode}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
@@ -77,39 +94,31 @@
     \egroup% %%% close group again
 }
 
-% [1.] extra args for \node e.g. yshift=...
-% 2. color
-% 3. node1
-% 4. node2
-% 5. text
-\newcommand{\annotatetwoabove}[4][]{\annotatetwoAt{#1}{#2}{#3}{#4}{north}}
-\newcommand{\annotatetwobelow}[4][]{\annotatetwoAt{#1}{#2}{#3}{#4}{south}}
-
-\newcommand{\annotateAtRight}[4][]{%
+\newcommand{\annotate}[4][]{%
     \bgroup% %%% so we don't leak the \def's below
     % #1: (optional) extra args for \node e.g. yshift=...
-    \def\myEAnode{#2}%
-    \def\myEAtext{#3}%
-    \def\myEAanchor{#4}% %%% anchor for annotation text and line, should be "north" for above and "south" for below
+    \pgfkeys{/eqnannotate, #2}
+    \def\myEAanchor{\EAanchor}% %%% anchor for annotation text and line, should be "north" for above and "south" for below
+    \def\myEAnode{#3}%
+    \def\myEAtext{#4}%
     \def\myEAcolor{\usevalue{\myEAnode}}%
+    \def\myEAxshift{\EAxshift{\EAwesteast}}%
     \stepcounter{eqnannotatenode}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
-        \node[anchor=\swapNorthSouth{\myEAanchor} west,color=\myEAcolor!85,#1] % TODO for some reason, passing #1 through command doesn't work...
+        \node[anchor=\swapNorthSouth{\myEAanchor} \swapWestEast{\EAwesteast},color=\myEAcolor!85,#1] % TODO for some reason, passing #1 through command doesn't work...
                 % anchor=west: align left edge of text on top of tikzmark in equation
                 % should be north west for below and south west for above ...
             (\eqnannotateCurrentNode) at (\myEAnode.\myEAanchor)  % \myEAanchor north: above the equation, south: below
             {\eqnannotationtext{\myEAtext}};
         \draw [color=\myEAcolor] (\myEAnode.\myEAanchor)  % arrow from the equation
                 % \myEAanchor north: above the equation, south: below
-            |- ([xshift=-0.3ex,yshift=0.1ex] \eqnannotateCurrentNode.south east);
+            |- ([xshift=\myEAxshift,yshift=0.1ex] \eqnannotateCurrentNode.south \EAwesteast);
                 % - south east: we want line to end at bottom right of annotation text;
                 % - negative xshift makes it a little bit shorter;
                 % - yshift for aesthetics (\strut is ever so slightly too tall).
     \end{tikzpicture}%
     \egroup% %%% close group again
 }
-\newcommand{\annotateAboveRight}[3][]{\annotateAtRight[#1]{#2}{#3}{north}}
-\newcommand{\annotateBelowRight}[3][]{\annotateAtRight[#1]{#2}{#3}{south}}
 
 \begin{document}
 
@@ -145,12 +154,12 @@
             )
         \big)
     \end{equation*}
-    \annotatetwoabove[yshift=1em]{p1}{p2}{\# of nodes}
-    \annotatetwobelow[yshift=-1em,xshift=0.2ex]{T1}{T2}{\# of graphs in $\hat{\mathcal{G}}_T$}
-    \annotatetwobelow[yshift=-2em]{k1}{k2}{max.\ indegree in $\hat{\mathcal{G}}_T$}
-    \annotateAboveRight[yshift=3em]{Is}{size of set of allowed interventions}
-    \annotateAboveRight[yshift=1em]{Nb}{\# of samples per batch}
-    \annotateBelowRight[yshift=-1em]{M}{\# of samples for $\mathbb{E}_y$}
+    \annotatetwo[yshift=1em]{above}{p1}{p2}{\# of nodes}
+    \annotatetwo[yshift=-1em,xshift=0.2ex]{below}{T1}{T2}{\# of graphs in $\hat{\mathcal{G}}_T$}
+    \annotatetwo[yshift=-2em]{below}{k1}{k2}{max.\ indegree in $\hat{\mathcal{G}}_T$}
+    \annotate[yshift=3em]{above,left}{Is}{size of set of allowed interventions}
+    \annotate[yshift=1em]{above}{Nb}{\# of samples per batch}
+    \annotate[yshift=-1em]{below}{M}{\# of samples for $\mathbb{E}_y$}
 \end{frame}
 
 \end{document}
