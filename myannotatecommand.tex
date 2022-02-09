@@ -46,7 +46,13 @@
 
 % from https://tex.stackexchange.com/a/48931/171664 :
 \def\addvalue#1#2{\expandafter\gdef\csname eqnannotate@data@#1\endcsname{#2}}
-\def\usevalue#1{\csname eqnannotate@data@#1\endcsname}
+\def\usevalue#1{%
+  \ifcsname eqnannotate@data@#1\endcsname
+    \csname eqnannotate@data@#1\expandafter\endcsname
+  \else
+    defaulthighlight%
+  \fi
+}
 
 \providecommand\EAanchor{north} % default set to "above"
 \providecommand\EAwesteast{east} % default set to "right"
