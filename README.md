@@ -16,6 +16,10 @@ Simply add a `\mathstrut` within the colorbox:
 
 ![output of annotated equation with equal-height highlights](example_annotation_equal_height.png)
 
+## Work in progress: turning it into reusable commands
+
+See [`myannotatecommand.tex`](https://github.com/st--/annotated_latex_equations/blob/main/myannotatecommand.tex).
+
 ## Much more information...
 
 ...in the answers to [this TeX StackExchange question](https://tex.stackexchange.com/q/254844/171664).
