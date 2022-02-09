@@ -40,9 +40,9 @@ Using [`annotate_equations.sty`](https://github.com/st--/annotated_latex_equatio
 
 Inspired by Sibin Mohan's https://github.com/synercys/annotated_latex_equations/, but with significantly simplified TikZ code, and with lots of comments to explain what is going on.
 
-Two versions, one for Beamer slides, one for within an article. For more complex examples, see https://github.com/synercys/annotated_latex_equations/.
+Two versions, one [as Beamer slides with transitions](https://github.com/st--/annotated_latex_equations/blob/main/demo_manual_annotate_beamer.tex), one [as an article](https://github.com/st--/annotated_latex_equations/blob/main/demo_manual_annotate_article.tex). For further examples, see https://github.com/synercys/annotated_latex_equations/.
 
-## Giving all highlight boxes the same height
+### Giving all highlight boxes the same height
 
 Simply add a `\mathstrut` within the colorbox:
 ```diff
