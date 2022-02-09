@@ -18,6 +18,14 @@
 \usetikzlibrary{tikzmark} % for \tikzmarknode
 \usetikzlibrary{calc} % for computing the midpoint between two nodes, e.g. at ($(p1.north)!0.5!(p2.north)$) 
 
+\newcommand{\eqnhighlightheight}{}  % colorbox will shrink to content
+\renewcommand{\eqnhighlightheight}{\mathstrut} % colorbox will always have full height
+
+\newcommand{\eqnhighlightshade}{17}  % light
+%\renewcommand{\eqnhighlightshade}{47}  % dark
+
+\newcommand{\eqnannotationtext}[1]{\textsf{\footnotesize\strut #1}}
+
 \newcommand{\eqnhighlightbox}[2]{%
 % \colorbox sets the second argument in text mode, so for use within equations we wrap it in $ $ again
     \mathchoice% to get right font size in each mode:
@@ -26,14 +34,6 @@
         {\colorbox{#1}{$\scriptstyle #2$}}%
         {\colorbox{#1}{$\scriptscriptstyle #2$}}%
 }
-
-\newcommand{\eqnhighlightheight}{}  % colorbox will shrink to content
-\renewcommand{\eqnhighlightheight}{\mathstrut} % colorbox will always have full height
-
-\newcommand{\eqnhighlightshade}{17}  % light
-\renewcommand{\eqnhighlightshade}{47}  % dark
-
-\newcommand{\eqnannotationtext}[1]{\textsf{\footnotesize\strut #1}}
 
 \newcommand{\eqnhighlight}[2]{\eqnhighlightbox{#1!\eqnhighlightshade}{\eqnhighlightheight #2}}
 
