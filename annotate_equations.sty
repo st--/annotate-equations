@@ -64,16 +64,19 @@
   \fi
 }
 
-\providecommand\EAanchor{north} % default set to "above"
+\providecommand\EAmarkanchor{north} % default set to "above"
 \providecommand\EAwesteast{east} % default set to "right"
+\providecommand\EAlabelanchor{south} % default set to "above"
 % for pgfkeys, see https://tex.stackexchange.com/a/34318/171664
 % for no-value keys, see https://tex.stackexchange.com/a/401848/171664
 \pgfkeys{
     /eqnannotate/.is family, /eqnannotate,
-    above/.code = {\renewcommand\EAanchor{north}},
-    below/.code = {\renewcommand\EAanchor{south}},
+    above/.code = {\renewcommand\EAmarkanchor{north}},
+    below/.code = {\renewcommand\EAmarkanchor{south}},
     left/.code = {\renewcommand\EAwesteast{west}},
     right/.code = {\renewcommand\EAwesteast{east}},
+    label above/.code = {\renewcommand\EAlabelanchor{south}},
+    label below/.code = {\renewcommand\EAlabelanchor{north}},
 }
 
 %%% TODO: add option for annotation text below arrow
@@ -92,22 +95,21 @@
 % can add xshift as well, if needed (also positive or negative)
 \newcommand{\annotatetwo}[5][]{%
     \begingroup% %%% so we don't leak the \def's below
-    % #1: (optional) extra args for \node e.g. yshift=...
-    \pgfkeys{/eqnannotate, #2}
-    \def\myEAanchor{\EAanchor}% %%% anchor for annotation text and line, should be "north" for above and "south" for below
-    \def\myEAnodeOne{#3}%
-    \def\myEAnodeTwo{#4}%
-    \def\myEAtext{#5}%
-    \def\myEAcolor{\usevalue{\myEAnodeOne}}%
     \stepcounter{eqnannotatenode}%
+    %%% #1: (optional) extra args for \node e.g. yshift=...
+    \pgfkeys{/eqnannotate, #2}% %%% all configuration options
+    \def\myEAmarkOne{#3}%
+    \def\myEAmarkTwo{#4}%
+    \def\myEAtext{#5}%
+    \def\myEAcolor{\usevalue{\myEAmarkOne}}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
         % default anchor is at center
-        \node[anchor=\swapNorthSouth{\myEAanchor},color=\myEAcolor!85,#1]  % color blended with white to 85%, any (optional) extra args #1
+        \node[anchor=\swapNorthSouth{\EAmarkanchor},color=\myEAcolor!85,#1]  % color blended with white to 85%, any (optional) extra args #1
             (\eqnannotateCurrentNode)   % use counter-based "local node"
-            at ($(\myEAnodeOne.\myEAanchor)!0.5!(\myEAnodeTwo.\myEAanchor)$)  % centered between the two nodes
+            at ($(\myEAmarkOne.\EAmarkanchor)!0.5!(\myEAmarkTwo.\EAmarkanchor)$)  % centered between the two nodes
             {\eqnannotationtext{\myEAtext}};
         % double arrow to two uses within the equation:
-        \draw [<->,color=\myEAcolor] (\myEAnodeOne.\myEAanchor) |- ([yshift=0.1ex] \eqnannotateCurrentNode.south) -| (\myEAnodeTwo.\myEAanchor);  % from node 1 via annotation to node 2, with anchor #6 each
+        \draw [<->,color=\myEAcolor] (\myEAmarkOne.\EAmarkanchor) |- ([yshift=0.1ex] \eqnannotateCurrentNode.\EAlabelanchor) -| (\myEAmarkTwo.\EAmarkanchor);  % from node 1 via annotation to node 2, with anchor #6 each
     \end{tikzpicture}%
     \endgroup% %%% close group again
 }
@@ -116,20 +118,19 @@
     \begingroup% %%% so we don't leak the \def's below
     % #1: (optional) extra args for \node e.g. yshift=...
     \pgfkeys{/eqnannotate, #2}
-    \def\myEAanchor{\EAanchor}% %%% anchor for annotation text and line, should be "north" for above and "south" for below
-    \def\myEAnode{#3}%
+    \def\myEAmark{#3}%
     \def\myEAtext{#4}%
-    \def\myEAcolor{\usevalue{\myEAnode}}%
+    \def\myEAcolor{\usevalue{\myEAmark}}%
     \def\myEAxshift{\EAxshift{\EAwesteast}}%
     \stepcounter{eqnannotatenode}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
-        \node[anchor=\swapNorthSouth{\myEAanchor} \swapWestEast{\EAwesteast},color=\myEAcolor!85,#1] % TODO for some reason, passing #1 through command doesn't work...
+        \node[anchor=\swapNorthSouth{\EAmarkanchor} \swapWestEast{\EAwesteast},color=\myEAcolor!85,#1] % TODO for some reason, passing #1 through command doesn't work...
                 % anchor=west: align left edge of text on top of tikzmark in equation
                 % should be north west for below and south west for above ...
-            (\eqnannotateCurrentNode) at (\myEAnode.\myEAanchor)  % \myEAanchor north: above the equation, south: below
+            (\eqnannotateCurrentNode) at (\myEAmark.\EAmarkanchor)  % \EAmarkanchor north: above the equation, south: below
             {\eqnannotationtext{\myEAtext}};
-        \draw [color=\myEAcolor] (\myEAnode.\myEAanchor)  % arrow from the equation
-                % \myEAanchor north: above the equation, south: below
+        \draw [color=\myEAcolor] (\EAmark.\EAmarkanchor)  % arrow from the equation
+                % \EAmarkanchor north: above the equation, south: below
             |- ([xshift=\myEAxshift,yshift=0.1ex] \eqnannotateCurrentNode.south \EAwesteast);
                 % - south east: we want line to end at bottom right of annotation text;
                 % - negative xshift makes it a little bit shorter;
