@@ -1,0 +1,196 @@
+\documentclass[letterpaper,twocolumn,10pt]{article} 
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{annotate_equations}
+\renewcommand{\eqnannotationtext}[1]{#1}
+\renewcommand{\eqnhighlightheight}{}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools, nccmath}
+\usepackage{wrapfig}
+\usepackage{comment}
+
+% To generate dummy text
+\usepackage{blindtext}
+
+
+%color
+%\usepackage[dvipsnames]{xcolor}
+% \usepackage{xcolor}
+
+
+%\usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
+% declare the path(s) for graphic files
+%\graphicspath{{../Figures/}}
+
+% extensions so you won't have to specify these with
+% every instance of \includegraphics
+% \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+
+% for custom commands
+\usepackage{xspace}
+
+% table alignment
+\usepackage{array}
+\usepackage{ragged2e}
+\newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
+\newcolumntype{X}[1]{>{\RaggedRight\hspace*{0pt}}p{#1}}
+
+% color box
+%\usepackage{tcolorbox}
+
+
+% for tikz
+%\usepackage{tikz}
+%%\usetikzlibrary{trees}
+%\usetikzlibrary{arrows,shapes,positioning,shadows,trees,mindmap}
+%% \usepackage{forest}
+%\usepackage[edges]{forest}
+%\usetikzlibrary{arrows.meta}
+\colorlet{linecol}{black!75}
+\usepackage{xkcdcolors} % xkcd colors
+
+
+% for colorful equation
+%\usepackage{tikz}
+%\usetikzlibrary{backgrounds}
+%\usetikzlibrary{arrows,shapes}
+%\usetikzlibrary{tikzmark}
+%\usetikzlibrary{calc}
+%% Commands for Highlighting text -- non tikz method
+%\newcommand{\highlight}[2]{\colorbox{#1!17}{$\displaystyle #2$}}
+%%\newcommand{\highlight}[2]{\colorbox{#1!17}{$#2$}}
+%\newcommand{\highlightdark}[2]{\colorbox{#1!47}{$\displaystyle #2$}}
+
+% my custom colors for shading
+\colorlet{mhpurple}{Plum!80}
+
+
+%% Commands for Highlighting text -- non tikz method
+%\renewcommand{\highlight}[2]{\colorbox{#1!17}{#2}}
+%\renewcommand{\highlightdark}[2]{\colorbox{#1!47}{#2}}
+
+% Some math definitions
+\newcommand{\lap}{\mathrm{Lap}}
+\newcommand{\pr}{\mathrm{Pr}}
+
+\newcommand{\Tset}{\mathcal{T}}
+\newcommand{\Dset}{\mathcal{D}}
+\newcommand{\Rbound}{\widetilde{\mathcal{R}}}
+
+\begin{document}
+
+\title{Annotated Equations in Latex Using Tikz}
+
+\author{
+{\bf Sibin Mohan, adapted to annotate\_equations by ST John}\\
+{https://github.com/st--}
+% copy the following lines to add more authors
+% \and
+% {\rm Name}\\
+%Name Institution
+} % end author
+
+\maketitle
+
+% Start with Two-Column Examples
+\blindtext
+\vspace{2\baselineskip}
+
+%%%%%
+\begin{equation}
+    \vspace{\baselineskip}
+            \label{eq:epsilon}
+                \pr[\eqnmarkbox[red]{x}{\mathcal{X}(\cdot)}\in \eqnmarkbox[blue]{s}{\mathcal{S}}] \leq e^\epsilon \cdot \pr[\eqnmark{x2}{\mathcal{X}}(\cdot)\in \mathcal{S}]
+\end{equation}
+\annotate[yshift=2em,xshift=2ex]{above,left}{x,x2}{\textbf{system state}}
+\annotate[yshift=-1.5em]{below,right}{s}{\textbf{$\mathcal{S} \subseteq \mathrm{Range}(\mathcal{X})$}}
+%%%%%
+
+% More complex annotations
+\blindtext
+\blindtext
+%%%%%
+\begin{figure}[htb]
+    \vspace{2\baselineskip}
+    \begin{equation}
+        \pr[\mathcal{R}(\eqnmarkbox[red]{ts}{\tau_i},\eqnmarkbox[blue]{js}{j})\in \mathcal{S}] \leq e^\epsilon \pr[\mathcal{R}(\eqnmarkbox[red]{td}{\tau_i'},\eqnmarkbox[blue]{jd}{j'})\in \mathcal{S}]
+    \label{eq:dp_one_instance}
+    \end{equation}
+    % TODO arrow color = mark color!57, annotation color = mark color!67
+    \annotatetwo[yshift=2em]{above}{ts}{td}{\textbf{$\tau_i,\tau' \in \Gamma$}, \textbf{the set of Tasks}}
+    \annotatetwo[yshift=-2em]{below, label below}{js}{jd}{\textbf{$j,j'\in \mathbb{N}$}}
+    \vspace{\baselineskip}
+    \caption{A More Complex Example for Annotated Equations, this time inside a figure construct.}
+\end{figure}
+%%%%%
+
+% Single column with more complex examples
+\onecolumn
+
+% Wrapping text around equations
+\blindtext
+%%%%%
+\begin{wrapfigure}{l}{0.5\columnwidth}
+    \vspace{\baselineskip}
+    \begin{equation}
+    \label{eq:laplace_density}
+        \lap (x\ |\ \eqnmarkbox[red]{u}{\mu}, \eqnmarkbox[blue]{b}{b}) = \frac{1}{2b} \mathrm{exp}(-\frac{|x-\mu|}{b}) 
+    \end{equation}
+    \annotate[yshift=2em]{above,right}{u}{\textbf{location parameter, mean}}
+    \annotate[yshift=-1.5em]{below,right}{b}{\textbf{$b >0$, scale parameter}}
+    \vspace{0.5\baselineskip}
+    \caption{An example in the single column format using the wrapfig construct.}
+    \vspace{0.5\baselineskip}
+\end{wrapfigure}
+%%%%%
+
+% Annotated Equations Side-by-Side
+\blindtext
+%%%%%
+\begin{figure}[h]
+    \vspace{\baselineskip}
+\begin{minipage}{0.5\columnwidth}
+\begin{equation*}
+\label{eq:ab_flushing}
+N_{i} = 
+\color{purple}
+\overbrace{ 
+    \eqnmarkbox[purple]{qp}{\color{black} Q_p} \color{black}\big( \eqnmarkbox[NavyBlue]{tj1}{\color{black} t_{j+1}} \color{black} - \eqnmarkbox[Bittersweet]{tj}{\color{black} t_{j}}  
+    \color{black}\big) |   
+    \eqnmarkbox[purple]{aj}{\color{black} \forall j}
+    \color{black}\big)
+}^{\substack{\text{\sf \footnotesize \textcolor{purple!85}{Some annotation about the 
+	}} \\ \text{\sf \footnotesize \textcolor{purple!85}{entire equation here.
+}} } }
+\end{equation*}
+\vspace*{0.5\baselineskip}
+\annotate[yshift=-1.8em]{below,left}{tj1}{\textsf{\footnotesize property of (j+1)\textsuperscript{th} item}}
+\annotate[yshift=-1.8em]{below,right}{tj}{\textsf{\footnotesize j\textsuperscript{th} item}}
+\end{minipage}
+\hfil
+\begin{minipage}{0.5\columnwidth}
+\begin{equation*}
+    \label{eq:ab_crypto}
+    \hspace*{-6em}
+    X_{i} = \frac{1}{\sum_{i=1}^{\eqnmarkbox[purple]{n}{N}} 
+    \sum_{j=1}^{\eqnmarkbox[NavyBlue]{mi}{M_i}} 
+    \tfrac{\eqnmarkbox[Bittersweet]{lij}{l_i^j}}{\eqnmarkbox[OliveGreen]{lmax}{l^{max}}}
+    }
+\end{equation*}
+\vspace*{0.8\baselineskip}
+\annotate[yshift=1.8em,color=Plum]{above,left}{n}{\textsf{\footnotesize number of objects}} %%% TODO change arrow color too!
+\annotate[yshift=3.5em]{above,right}{mi}{\textsf{\footnotesize number of other objects}}
+\annotate[yshift=1.9em]{above,right}{lij}{\textsf{\footnotesize size of j\textsuperscript{th} service}}
+\annotate[yshift=-1.5em,color=xkcdHunterGreen]{below,left}{lmax}{\textsf{\footnotesize maximum obj size}}
+\end{minipage}
+\caption{Two Equations side-by-side using minipage and figure constructs.}
+\end{figure}
+%%%%%
+
+\blindtext
+
+\end{document}
