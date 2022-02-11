@@ -34,22 +34,23 @@
 \newcommand*{\eqnhighlightfbox}[2]{%
 % \colorbox sets the second argument in text mode, so for use within equations we wrap it in $ $ again
     \mathchoice% to get right font size in each mode:
-        {\begingroup\setlength{\fboxrule}{0pt}\fbox{$\displaystyle\color{#1}#2$}\endgroup}%
-        {\begingroup\setlength{\fboxrule}{0pt}\fbox{$\textstyle\color{#1}#2$}\endgroup}%
-        {\begingroup\setlength{\fboxrule}{0pt}\fbox{$\scriptstyle\color{#1}#2$}\endgroup}%
-        {\begingroup\setlength{\fboxrule}{0pt}\fbox{$\scriptscriptstyle\color{#1}#2$}\endgroup}%
+        {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\displaystyle\color{#1}#2$}\endgroup}%
+        {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\textstyle\color{#1}#2$}\endgroup}%
+        {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\scriptstyle\color{#1}#2$}\endgroup}%
+        {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\scriptscriptstyle\color{#1}#2$}\endgroup}%
 }
 
+% . is the current color
 
-\newcommand*{\eqnhighlight}[2]{\eqnhighlightcolorbox{#1!\eqnhighlightshade}{\eqnhighlightheight #2}}
+\newcommand*{\eqnhighlight}[2]{\begingroup\colorlet{currentcolor}{.}\eqnhighlightcolorbox{#1!\eqnhighlightshade}{\eqnhighlightheight #2}\endgroup}
 
 %%% the fbox with 0pt rule fixes the height of eqnmark vs eqnmarkbox issue
 \newcommand*{\eqncolor}[2]{\eqnhighlightfbox{#1}{\eqnhighlightheight #2}}
 %\renewcommand{\eqncolor}[2]{{\color{#1}\eqnhighlightheight #2}}
 
-\colorlet{defaulthighlight}{black}
-\newcommand*{\eqnmarkbox}[3][defaulthighlight]{\addvalue{#2}{#1}\tikzmarknode{#2}{\eqnhighlight{#1}{#3}}}
-\newcommand*{\eqnmark}[3][defaulthighlight]{\addvalue{#2}{#1}\tikzmarknode{#2}{\eqncolor{#1}{#3}}}
+%%% Arguments to \eqnmark[box]: [highlight color]{node name}{term to highlight}
+\newcommand*{\eqnmarkbox}[3][currentcolor]{\addvalue{#2}{#1}\tikzmarknode{#2}{\eqnhighlight{#1}{#3}}}
+\newcommand*{\eqnmark}[3][currentcolor]{\addvalue{#2}{#1}\tikzmarknode{#2}{\eqncolor{#1}{#3}}}
 
 \newcounter{eqnannotatenode}
 \newcommand*{\eqnannotateCurrentNode}{eqnannotatenode\theeqnannotatenode}
@@ -60,7 +61,7 @@
   \ifcsname eqnannotate@data@#1\endcsname
     \csname eqnannotate@data@#1\expandafter\endcsname
   \else
-    defaulthighlight%
+    currentcolor%
   \fi
 }
 
@@ -98,6 +99,7 @@
     \pgfkeys{/eqnannotate, #2}% %%% all configuration options
     \def\myEAmarkOne{#3}%
     \def\myEAmarkTwo{#4}%
+    \colorlet{currentcolor}{.}
     \def\myEAtext{#5}%
     \def\myEAcolor{\usevalue{\myEAmarkOne}}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
@@ -124,14 +126,15 @@
 
 \newcommand{\annotate}[4][]{%
     \begingroup% %%% so we don't leak the \def's below
+    \stepcounter{eqnannotatenode}%
     % #1: (optional) extra args for \node e.g. yshift=...
     \pgfkeys{/eqnannotate, #2}
     \def\myEAmarks{#3}%
     \extractfirst\myEAmark\myEAmarks% %%% get first node for color and annotation
     \def\myEAtext{#4}%
+    \colorlet{currentcolor}{.}
     \def\myEAcolor{\usevalue{\myEAmark}}%
     \def\myEAxshift{\EAxshift{\EAwesteast}}%
-    \stepcounter{eqnannotatenode}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
         \node[anchor=\swapNorthSouth{\EAmarkanchor} \swapWestEast{\EAwesteast},color=\myEAcolor!85,#1] % TODO for some reason, passing #1 through command doesn't work...
                 % anchor=west: align left edge of text on top of tikzmark in equation
