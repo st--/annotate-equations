@@ -129,7 +129,7 @@
                 % should be north west for below and south west for above ...
             (\eqnannotateCurrentNode) at (\myEAmark.\EAmarkanchor)  % \EAmarkanchor north: above the equation, south: below
             {\eqnannotationtext{\myEAtext}};
-        \draw [color=\myEAcolor] (\EAmark.\EAmarkanchor)  % arrow from the equation
+        \draw [color=\myEAcolor] (\myEAmark.\EAmarkanchor)  % arrow from the equation
                 % \EAmarkanchor north: above the equation, south: below
             |- ([xshift=\myEAxshift,yshift=0.1ex] \eqnannotateCurrentNode.south \EAwesteast);
                 % - south east: we want line to end at bottom right of annotation text;
