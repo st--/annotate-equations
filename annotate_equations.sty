@@ -15,13 +15,35 @@
 \usetikzlibrary{tikzmark} % for \tikzmarknode
 \usetikzlibrary{calc} % for computing the midpoint between two nodes, e.g. at ($(p1.north)!0.5!(p2.north)$) 
 
+
+%%%%% SETTINGS %%%%%
+
 \newcommand{\eqnhighlightheight}{}  % colorbox will shrink to content
 \renewcommand{\eqnhighlightheight}{\mathstrut} % colorbox will always have full height
 
 \newcommand{\eqnhighlightshade}{17}  % light
 %\renewcommand{\eqnhighlightshade}{47}  % dark
 
-\newcommand{\eqnannotationtext}[1]{\textsf{\footnotesize\strut #1}}
+\newcommand{\eqnannotationtext}[1]{\textsf{\footnotesize\strut #1}} %%% TODO remove textsf/footnotesize/strut?
+
+
+\providecommand\EAmarkanchor{north} % default set to "above"
+\providecommand\EAwesteast{east} % default set to "right"
+\providecommand\EAlabelanchor{south} % default set to "above"
+% for pgfkeys, see https://tex.stackexchange.com/a/34318/171664
+% for no-value keys, see https://tex.stackexchange.com/a/401848/171664
+\pgfkeys{
+    /eqnannotate/.is family, /eqnannotate,
+    above/.code = {\renewcommand\EAmarkanchor{north}},
+    below/.code = {\renewcommand\EAmarkanchor{south}},
+    left/.code = {\renewcommand\EAwesteast{west}},
+    right/.code = {\renewcommand\EAwesteast{east}},
+    label above/.code = {\renewcommand\EAlabelanchor{south}},
+    label below/.code = {\renewcommand\EAlabelanchor{north}},
+}
+
+%%%%% %%%%%%%% %%%%%
+
 
 \newcommand*{\eqnhighlightcolorbox}[2]{%
 % \colorbox sets the second argument in text mode, so for use within equations we wrap it in $ $ again
@@ -31,8 +53,10 @@
         {\colorbox{#1}{$\scriptstyle #2$}}%
         {\colorbox{#1}{$\scriptscriptstyle #2$}}%
 }
+
+%%% the fbox with 0pt rule fixes the height of eqnmark vs eqnmarkbox issue
 \newcommand*{\eqnhighlightfbox}[2]{%
-% \colorbox sets the second argument in text mode, so for use within equations we wrap it in $ $ again
+% \fbox sets the second argument in text mode, so for use within equations we wrap it in $ $ again
     \mathchoice% to get right font size in each mode:
         {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\displaystyle\color{#1}#2$}\endgroup}%
         {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\textstyle\color{#1}#2$}\endgroup}%
@@ -52,9 +76,7 @@
 \newcommand*{\eqnmarkbox}[3][currentcolor]{\addvalue{#2}{#1}\tikzmarknode{#2}{\eqnhighlight{#1}{#3}}}
 \newcommand*{\eqnmark}[3][currentcolor]{\addvalue{#2}{#1}\tikzmarknode{#2}{\eqncolor{#1}{#3}}}
 
-\newcounter{eqnannotatenode}
-\newcommand*{\eqnannotateCurrentNode}{eqnannotatenode\theeqnannotatenode}
-
+% Store current color in a dictionary (lookup table),
 % from https://tex.stackexchange.com/a/48931/171664 :
 \def\addvalue#1#2{\expandafter\gdef\csname eqnannotate@data@#1\endcsname{#2}}
 \def\usevalue#1{%
@@ -65,21 +87,8 @@
   \fi
 }
 
-\providecommand\EAmarkanchor{north} % default set to "above"
-\providecommand\EAwesteast{east} % default set to "right"
-\providecommand\EAlabelanchor{south} % default set to "above"
-% for pgfkeys, see https://tex.stackexchange.com/a/34318/171664
-% for no-value keys, see https://tex.stackexchange.com/a/401848/171664
-\pgfkeys{
-    /eqnannotate/.is family, /eqnannotate,
-    above/.code = {\renewcommand\EAmarkanchor{north}},
-    below/.code = {\renewcommand\EAmarkanchor{south}},
-    left/.code = {\renewcommand\EAwesteast{west}},
-    right/.code = {\renewcommand\EAwesteast{east}},
-    label above/.code = {\renewcommand\EAlabelanchor{south}},
-    label below/.code = {\renewcommand\EAlabelanchor{north}},
-}
 
+%%%%% Helpers for swapping north/south / west/east / -/+ depending on above/below / left/right etc.:
 \newcommand*{\swapNorthSouth}[1]{%
     \ifnum\pdfstrcmp{#1}{south}=0 north\else south\fi
 }
@@ -89,9 +98,13 @@
 \newcommand*{\EAxshift}[1]{%
     \ifnum\pdfstrcmp{#1}{east}=0 -0.3ex\else 0.3ex\fi
 }
+%%%%%
 
-% manually adjust \node's yshift until it's at appropriate distance above the equation
-% can add xshift as well, if needed (also positive or negative)
+
+\newcounter{eqnannotatenode}
+\newcommand*{\eqnannotateCurrentNode}{eqnannotatenode\theeqnannotatenode}
+
+
 \newcommand{\annotatetwo}[5][]{%
     \begingroup% %%% so we don't leak the \def's below
     \stepcounter{eqnannotatenode}%
@@ -114,6 +127,7 @@
     \endgroup% %%% close group again
 }
 
+
 %%% \extractfirst from https://tex.stackexchange.com/a/115733/171664
 \RequirePackage{expl3}
 \RequirePackage{xparse}
@@ -127,13 +141,20 @@
 \newcommand{\annotate}[4][]{%
     \begingroup% %%% so we don't leak the \def's below
     \stepcounter{eqnannotatenode}%
+    %
+    %
+    %
     % #1: (optional) extra args for \node e.g. yshift=...
     \pgfkeys{/eqnannotate, #2}
     \def\myEAmarks{#3}%
     \extractfirst\myEAmark\myEAmarks% %%% get first node for color and annotation
     \def\myEAtext{#4}%
+    %
+    %
     \colorlet{currentcolor}{.}
     \def\myEAcolor{\usevalue{\myEAmark}}%
+    %
+    %
     \def\myEAxshift{\EAxshift{\EAwesteast}}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
         \node[anchor=\swapNorthSouth{\EAmarkanchor} \swapWestEast{\EAwesteast},color=\myEAcolor!85,#1] % TODO for some reason, passing #1 through command doesn't work...
