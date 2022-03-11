@@ -58,19 +58,16 @@
 \newcommand*{\eqnhighlightfbox}[2]{%
 % \fbox sets the second argument in text mode, so for use within equations we wrap it in $ $ again
     \mathchoice% to get right font size in each mode:
-        {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\displaystyle\color{#1}#2$}\endgroup}%
-        {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\textstyle\color{#1}#2$}\endgroup}%
-        {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\scriptstyle\color{#1}#2$}\endgroup}%
-        {\begingroup\colorlet{currentcolor}{.}\setlength{\fboxrule}{0pt}\fbox{$\scriptscriptstyle\color{#1}#2$}\endgroup}%
+        {\begingroup\setlength{\fboxrule}{0pt}\fbox{$\displaystyle\color{#1}#2$}\endgroup}%
+        {\begingroup\setlength{\fboxrule}{0pt}\fbox{$\textstyle\color{#1}#2$}\endgroup}%
+        {\begingroup\setlength{\fboxrule}{0pt}\fbox{$\scriptstyle\color{#1}#2$}\endgroup}%
+        {\begingroup\setlength{\fboxrule}{0pt}\fbox{$\scriptscriptstyle\color{#1}#2$}\endgroup}%
 }
 
 % . is the current color
 
 \newcommand*{\eqnhighlight}[2]{\begingroup\colorlet{currentcolor}{.}\eqnhighlightcolorbox{#1!\eqnhighlightshade}{\eqnhighlightheight #2}\endgroup}
-
-%%% the fbox with 0pt rule fixes the height of eqnmark vs eqnmarkbox issue
-\newcommand*{\eqncolor}[2]{\eqnhighlightfbox{#1}{\eqnhighlightheight #2}}
-%\renewcommand{\eqncolor}[2]{{\color{#1}\eqnhighlightheight #2}}
+\newcommand*{\eqncolor}[2]{\begingroup\colorlet{currentcolor}{.}\eqnhighlightfbox{#1}{\eqnhighlightheight #2}\endgroup}
 
 %%% Arguments to \eqnmark[box]: [highlight color]{node name}{term to highlight}
 \newcommand*{\eqnmarkbox}[3][currentcolor]{\addvalue{#2}{#1}\tikzmarknode{#2}{\eqnhighlight{#1}{#3}}}
