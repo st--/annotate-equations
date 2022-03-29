@@ -1,10 +1,10 @@
 # Annotated example of how to make annotated equations in LaTeX using TikZ.
 
-## Work in progress: turning it into reusable commands
+## A package with reusable commands
 
 ![output of annotated equation](example_annotation_package.png)
 
-Using [`annotate_equations.sty`](https://github.com/st--/annotated_latex_equations/blob/main/annotate_equations.sty), an equation can easily be annotated as follows:
+Using [`annotate_equations.sty`](https://github.com/st--/annotate_equations/blob/main/annotate_equations.sty), an equation can easily be annotated as follows:
 ```latex
 \begin{equation*}
     \mathcal{O}\big(
@@ -33,6 +33,9 @@ Using [`annotate_equations.sty`](https://github.com/st--/annotated_latex_equatio
 \annotate[yshift=1em]{above}{Nb}{\# of samples per batch}
 \annotate[yshift=-1em]{below}{M}{\# of samples for $\mathbb{E}_y$}
 ```
+
+More details are in the [user manual](usermanual.pdf).
+Should work with both pdflatex and lualatex.
 
 ## How to do it from scratch
 
