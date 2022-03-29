@@ -1,11 +1,12 @@
 # Annotate equations in LaTeX using TikZ
 
-Author: ST John, http://www.infinitecuriosity.org/
-License: MIT
-
 This package provides commands for highlighting & marking terms within equations and then adding annotations to the equations (based on TikZ).
 
 Inspired by Sibin Mohan's https://github.com/synercys/annotated_latex_equations/
+
+Package author: ST John, http://www.infinitecuriosity.org/
+
+License: MIT
 
 ## A package with reusable commands
 

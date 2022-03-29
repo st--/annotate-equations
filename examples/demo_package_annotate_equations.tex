@@ -27,13 +27,14 @@
     \colorlet{colorIs}{black}
 
     \begin{equation*}
+        \color{BurntOrange}
         \mathcal{O}\big(
             (
             % \tikzmarknode is what links parts of the equation and corresponding annotations
             \eqnmarkbox[colorp]{p1}{p}
             \eqnmarkbox[colork]{k1}{\kappa}^3 % note that we have the ^3 outside the \tikzmarknode
             )
-            \eqnmarkbox[colorT]{T1}{T}
+            \eqnmarkbox{T1}{T}
             +
             (
             \eqnmarkbox[colorp]{p2}{p} % tikzmarks need distinct names!
@@ -42,7 +43,7 @@
             (
             \eqnmarkbox[colorT]{T2}{T}^2
             \tikzmarknode{Is}{|\mathcal{I}^*|}
-            \eqnmarkbox[colorNb]{Nb}{N_b}
+            \eqnmarkbox[colorNb]{Nb}{N}_{\!\!\eqnmarkbox[BurntOrange]{b}{b}}
             \eqnmark[colorM]{M}{M}
             )
         \big)
@@ -53,6 +54,7 @@
     \annotate[yshift=3em]{above,left}{Is}{size of set of allowed interventions}
     \annotate[yshift=1em]{above}{Nb}{\# of samples per batch}
     \annotate[yshift=-1em]{below}{M}{\# of samples for $\mathbb{E}_y$}
+    \annotate[yshift=-3em]{below,left}{b}{batch index}
 \end{frame}
 
 \end{document}
