@@ -1,10 +1,11 @@
 # Annotate equations in LaTeX using TikZ
 
-This package provides commands for highlighting & marking terms within equations and then adding annotations to the equations (based on TikZ).
+This package provides commands that make it easy to highlight terms in equations & add annotation labels (based on TikZ).
+Should work with pdflatex as well as lualatex.
 
 Inspired by Sibin Mohan's https://github.com/synercys/annotated_latex_equations/
 
-Please report any bugs and issues and contribute changes & improvements on https://github.com/st--/annotate-equations/
+Please report any bugs, issues, contribute changes & improvements on https://github.com/st--/annotate-equations/ :)
 
 Package author: ST John, http://www.infinitecuriosity.org/
 
