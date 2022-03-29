@@ -1,8 +1,8 @@
-# Annotated example of how to make annotated equations in LaTeX using TikZ.
+# Annotate equations in LaTeX using TikZ
 
 ## A package with reusable commands
 
-![output of annotated equation](example_annotation_package.png)
+![output of annotated equation](examples/example_annotation_package.png)
 
 Using [`annotate_equations.sty`](https://github.com/st--/annotate_equations/blob/main/annotate_equations.sty), an equation can easily be annotated as follows:
 ```latex
@@ -37,13 +37,13 @@ Using [`annotate_equations.sty`](https://github.com/st--/annotate_equations/blob
 More details are in the [user manual](usermanual.pdf).
 Should work with both pdflatex and lualatex.
 
-## How to do it from scratch
+## How to do it from scratch: annotated examples
 
-![output of annotated equation](example_annotation.png)
+![output of annotated equation](examples/example_annotation.png)
 
 Inspired by Sibin Mohan's https://github.com/synercys/annotated_latex_equations/, but with significantly simplified TikZ code, and with lots of comments to explain what is going on.
 
-Two versions, one [as Beamer slides with transitions](https://github.com/st--/annotated_latex_equations/blob/main/demo_manual_annotate_beamer.tex), one [as an article](https://github.com/st--/annotated_latex_equations/blob/main/demo_manual_annotate_article.tex). For further examples, see https://github.com/synercys/annotated_latex_equations/.
+Two versions, one [as Beamer slides with transitions](https://github.com/st--/annotate_equations/blob/main/examples/demo_manual_annotate_beamer.tex), one [as an article](https://github.com/st--/annotate_equations/blob/main/examples/demo_manual_annotate_article.tex). For further examples, see https://github.com/synercys/annotated_latex_equations/.
 
 ### Giving all highlight boxes the same height
 
@@ -53,7 +53,7 @@ Simply add a `\mathstrut` within the colorbox:
 +\newcommand{\highlight}[2]{\colorbox{#1!17}{$\mathstrut #2$}}
 ```
 
-![output of annotated equation with equal-height highlights](example_annotation_equal_height.png)
+![output of annotated equation with equal-height highlights](examples/example_annotation_equal_height.png)
 
 ## Much more information...
 
