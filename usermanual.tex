@@ -1,0 +1,282 @@
+\documentclass{article}
+\usepackage[a4paper, margin=1in]{geometry}
+
+\usepackage[dvipsnames]{xcolor}
+
+%%% standard math packages for equations:
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\usepackage{annotate_equations}
+
+%\usepackage{showexpl} % LTXexample
+\usepackage[skins,listings]{tcolorbox}
+\newtcblisting{LTXexample}[1][]{%
+  colframe=black!20,
+  colback=black!10,
+  coltitle=red!50!yellow!3!white,
+  bicolor,colbacklower=white,
+  fonttitle=\sffamily\bfseries,
+%  listing options={escapeinside=\`\`},
+  %sidebyside,
+  text above listing,
+  #1}
+
+\title{\texttt{annotate\_equations.sty}}
+\author{ST John}
+\date{\url{https://github.com/st--/annotate_equations}}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+This package is there to make it easier to make annotated equations in \LaTeX, such as in this example:
+\begin{LTXexample}[]
+\vspace{4em}
+\renewcommand{\eqnhighlightheight}{\vphantom{\hat{H}}\mathstrut}
+\begin{equation*}
+    i \tikzmarknode{hbar}{\mathstrut\hbar} \frac{\partial}{\partial t} \eqnmarkbox[blue]{Psi1}{\Psi(x, t)} = \eqnmark[red]{Hhat}{\hat{H}} \eqnmarkbox[blue]{Psi2}{\Psi(x, t)}
+\end{equation*}
+\annotate[yshift=3em]{above}{hbar}{$\hbar = \frac{h}{2\pi}$, reduced Planck constant}
+\annotate[yshift=1em]{above}{Hhat}{Hamilton operator}
+\annotatetwo[yshift=-1em]{below}{Psi1}{Psi2}{Wave function}
+\vspace{1em}
+\end{LTXexample}
+There is still a bit of manual tweaking required, but hopefully this will make it a bit less painful to annotate your equations!
+
+\section{Marking annotation targets within your equation}
+
+\newcommand{\cmdoption}[1]{$\langle$\textit{#1}$\rangle$}
+
+Use
+\verb|\eqnmarkbox[|\cmdoption{color}\verb|]{|\cmdoption{node name}\verb|}{|\cmdoption{equation term(s)}\verb|}|
+or
+\verb|\eqnmark[|\cmdoption{color}\verb|]{|\cmdoption{node name}\verb|}{| \cmdoption{equation term(s)}\verb|}|
+to define the target of an annotation within your equation. \verb|\eqnmarkbox| adds background shading, whereas \verb|\eqnmark| changes the text color.
+(You can also use
+\verb|\tikzmarknode{|\cmdoption{node name}\verb|}{|\cmdoption{equation term(s)}\verb|}|,
+but this is likely to end up with the arrow tip too close to the target.)
+%
+\begin{LTXexample}[text outside listing,lefthand width=1in]
+\begin{equation*}
+    \eqnmarkbox[blue]{node1}{e_q^n}
+    \eqnmark[red]{node2}{f(x)}
+    \tikzmarknode{node3}{kT}
+\end{equation*}
+\end{LTXexample}
+\noindent
+
+\section{Simple annotations}
+\label{sec:annotate}
+
+Once you have defined nodes within your equations, you can annotate them using
+\verb|\annotate[|\cmdoption{tikz options}\verb|]{|\cmdoption{annotate keys}\verb|}{|\cmdoption{node name[,\dots]}\verb|}{|\cmdoption{annotation text}\verb|}|.
+%
+\cmdoption{tikz options} is passed through to the options for the TikZ node defining the annotation; its most important use is to set the \texttt{yshift}.
+For \cmdoption{annotate keys}, see \cref{sec:annotate-keys}.
+\cmdoption{node name} is the same name you used to mark the node within the equation, e.g.\ using \verb|\eqnmarkbox|.
+\cmdoption{annotation text} is the text of the annotation itself.
+%
+\begin{LTXexample}[text outside listing,lefthand width=1in]
+\begin{equation*}
+    \eqnmarkbox[blue]{node1}{e_q^n}
+    \eqnmark[red]{node2}{f(x)}
+    \tikzmarknode{node3}{kT}
+\end{equation*}
+\annotate[yshift=1em]{}{node1,node2}{my annotation text}
+\end{LTXexample}
+\noindent
+%
+\label{sec:tikz-options}
+You generally need to manually adjust the \texttt{yshift} to move the annotations to an appropriate distance above (or negative values for below) the equation.
+(You can also adjust \texttt{xshift} if needed, also positive or negative.)
+
+The annotation picks the same text color as given to \verb|\eqnmarkbox| or \verb|\eqnmark|, but you can also override it using \texttt{color} option.
+
+One annotation can point to multiple targets, and multiple annotations can point to the same target.
+
+\subsection{Annotation options}
+\label{sec:annotate-keys}
+
+\cmdoption{annotate keys} can be empty, or contain one or more of:
+\begin{itemize}
+    \item \texttt{above} (default) or \texttt{below},
+    \item \texttt{right} (default) or \texttt{left},
+    \item \texttt{label above} (default) or \texttt{label below}.
+
+        Note: currently only works for \verb|\annotatetwo| (\cref{sec:annotatetwo}).
+\end{itemize}
+%
+\begin{LTXexample}[text outside listing,lefthand width=1in]
+\begin{equation*}
+    \eqnmarkbox[blue]{node1}{e_q^n}
+    \eqnmark[red]{node2}{f(x)}
+    \tikzmarknode{node3}{kT}
+\end{equation*}
+\annotate[yshift=1em]{left}{node1}{my}
+\annotate[yshift=-0.5em]{below,left}{node2}{annotation}
+\annotate[yshift=-1em]{below}{node3}{text}
+\end{LTXexample}
+\noindent
+%
+
+\section{Double annotations}
+\label{sec:annotatetwo}
+
+\verb|\annotatetwo[|\cmdoption{tikz options}\verb|]{|\cmdoption{annotate keys}\verb|}{|\cmdoption{first node name}\verb|}{|\cmdoption{second node name}\verb|}{|\cmdoption{annotation text}\verb|}|.
+\cmdoption{tikz options} and \cmdoption{annotate keys} are as described above in \cref{sec:tikz-options,sec:annotate-keys}. Note that \cmdoption{annotate keys} \texttt{left}/\texttt{right} have no effect in \verb|\annotatetwo|.
+
+\begin{LTXexample}[text outside listing,lefthand width=1in]
+\begin{equation*}
+    \eqnmarkbox[red]{a1}{a} \eqnmarkbox[blue]{b1}{b} = \eqnmarkbox[green]{b2}{b} \eqnmarkbox{a2}{a}
+\end{equation*}
+\annotatetwo[yshift=1.5em]{above, label below}{a1}{a2}{var 1}
+\annotatetwo[yshift=0.5em]{above}{b1}{b2}{var 2}
+\annotatetwo[yshift=-0.5em]{below}{b2}{b1}{var 2}
+\end{LTXexample}
+\noindent
+%
+Color is picked from the first of the two nodes.
+
+\section{Package options}
+
+\subsection{Size of highlight: shrink to content or always full height}
+
+\verb|\eqnhighlightheight| is inserted into every \verb|\eqnhighlight|, \verb|\eqncolor|, \verb|\eqnmark|, and \verb|\eqnmarkbox| and by redefining it you can specify the minimum height for the corresponding box:
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\renewcommand{\eqnhighlightheight}{}  % package default
+\begin{equation*}
+    \eqnmarkbox[red]{hbar}{\hbar} \eqnmarkbox[blue]{q}{q}
+\end{equation*}
+\end{LTXexample}
+\noindent
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\renewcommand{\eqnhighlightheight}{\mathstrut}  % 0-width "constant" height
+\begin{equation*}
+    \eqnmarkbox[red]{hbar}{\hbar} \eqnmarkbox[blue]{q}{q}
+\end{equation*}
+\end{LTXexample}
+\noindent
+%
+\verb|\eqnhighlightheight| is used in math mode.
+
+
+Note that in some cases \verb|\mathstrut| might not be enough, as in the introductory example:
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\renewcommand{\eqnhighlightheight}{\mathstrut}  % 0-width "constant" height
+\begin{equation*}
+    \eqnmarkbox[red]{Hhat}{\hat{H}} \eqnmarkbox[blue]{Psi}{\Psi}
+\end{equation*}
+\end{LTXexample}
+\noindent
+%
+You can create custom 0-width characters using \verb|\vphantom|:
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\renewcommand{\eqnhighlightheight}{\vphantom{\hat{H}}\mathstrut}  % custom 0-width height
+\begin{equation*}
+    \eqnmarkbox[red]{Hhat}{\hat{H}} \eqnmarkbox[blue]{Psi}{\Psi}
+\end{equation*}
+\end{LTXexample}
+\noindent
+%
+(It looks more balanced if you still include the \verb|\mathstrut|.)
+
+\subsection{Amount of shading of mark highlight}
+
+\verb|\eqnhighlightshade| defines the percentage of the specified color to take:
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\renewcommand{\eqnhighlightshade}{17}  % package default
+\begin{equation*}
+    \eqnmarkbox[red]{hbar}{\hbar} \eqnmarkbox[blue]{q}{q}
+\end{equation*}
+\end{LTXexample}
+\noindent
+%
+By redefining this command, you can change the ``alpha'' value of the highlight:
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\renewcommand{\eqnhighlightshade}{47}  % 0 is white, 100 is solid color
+\begin{equation*}
+    \eqnmarkbox[red]{hbar}{\hbar} \eqnmarkbox[blue]{q}{q}
+\end{equation*}
+\end{LTXexample}
+\noindent
+
+\subsection{Default formatting of annotation labels}
+
+\verb|\eqnannotationtext| is a one-argument command that gets the annotation text as an argument and can be used to have consistent formatting:
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+% package default:
+\renewcommand{\eqnannotationtext}[1]{\sffamily\footnotesize#1\strut}  
+
+\begin{equation*}
+    \eqnmarkbox[blue]{v}{v}
+\end{equation*}
+\annotate[yshift=-0.5em]{below}{v}{velocity}
+\vspace{1em}
+\end{LTXexample}
+\noindent
+%
+(The \verb|\strut| has a similar effect to \verb|\mathstrut| in \verb|\eqnhighlightheight|.)
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\renewcommand{\eqnannotationtext}[1]{\bfseries\small#1}  
+
+\begin{equation*}
+    \eqnmarkbox[blue]{v}{v}
+\end{equation*}
+\annotate[yshift=-0.5em]{below}{v}{velocity}
+\vspace{1em}
+\end{LTXexample}
+\noindent
+%
+
+\section{Recommendations, tips \& tricks}
+
+\subsection{Use \texttt{\textbackslash{}colorlet} for consistent, easily changeable colors}
+
+\subsection{Line breaks within annotations}
+\label{sec:multiline}
+
+Possible, but a bit annoying. By default, the formatting only covers the first line:
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\begin{equation*}
+    \eqnmarkbox[blue]{h}{h}
+\end{equation*}
+\annotate[yshift=-0.5em]{below}{h}{Planck\\constant}
+\vspace{1em}
+\end{LTXexample}
+\noindent
+%
+Here is a manual work-around:
+%
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\begin{equation*}
+    \eqnmarkbox[blue]{h}{h}
+\end{equation*}
+\annotate[yshift=-0.5em]{below}{h}{Planck\\\sffamily\footnotesize constant}
+\vspace{1em}
+\end{LTXexample}
+\noindent
+
+\section{Known issues}
+
+\begin{itemize}
+    \item \texttt{label above}/\texttt{label below} not implemented for \verb|\annotate|.
+
+    \item Formatting only covers first line in multi-line annotation texts (see \cref{sec:multiline}).
+\end{itemize}
+
+\end{document}
