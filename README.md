@@ -15,7 +15,7 @@ License: MIT
 
 ![rendering of annotated equation](examples/example_annotation_package.png)
 
-Using [`annotate_equations.sty`](https://github.com/st--/annotate-equations/blob/main/annotate_equations.sty), an equation can easily be annotated as follows:
+Using [`annotate-equations.sty`](https://github.com/st--/annotate-equations/blob/main/annotate-equations.sty), an equation can easily be annotated as follows:
 ```latex
 \begin{equation*}
     \mathcal{O}\big(
