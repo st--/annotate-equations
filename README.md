@@ -4,6 +4,8 @@ This package provides commands for highlighting & marking terms within equations
 
 Inspired by Sibin Mohan's https://github.com/synercys/annotated_latex_equations/
 
+Please report any bugs and issues and contribute changes & improvements on https://github.com/st--/annotate-equations/
+
 Package author: ST John, http://www.infinitecuriosity.org/
 
 License: MIT
