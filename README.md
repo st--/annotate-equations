@@ -4,7 +4,7 @@
 
 ![output of annotated equation](examples/example_annotation_package.png)
 
-Using [`annotate_equations.sty`](https://github.com/st--/annotate_equations/blob/main/annotate_equations.sty), an equation can easily be annotated as follows:
+Using [`annotate_equations.sty`](https://github.com/st--/annotate-equations/blob/main/annotate_equations.sty), an equation can easily be annotated as follows:
 ```latex
 \begin{equation*}
     \mathcal{O}\big(
@@ -34,16 +34,16 @@ Using [`annotate_equations.sty`](https://github.com/st--/annotate_equations/blob
 \annotate[yshift=-1em]{below}{M}{\# of samples for $\mathbb{E}_y$}
 ```
 
-More details are in the [user manual](usermanual.pdf).
+More details are in the [user manual](annotate-equations.pdf).
 Should work with both pdflatex and lualatex.
 
 ## How to do it from scratch: annotated examples
 
-![output of annotated equation](examples/example_annotation.png)
+![rendering of annotated equation](examples/example_annotation.png)
 
 Inspired by Sibin Mohan's https://github.com/synercys/annotated_latex_equations/, but with significantly simplified TikZ code, and with lots of comments to explain what is going on.
 
-Two versions, one [as Beamer slides with transitions](https://github.com/st--/annotate_equations/blob/main/examples/demo_manual_annotate_beamer.tex), one [as an article](https://github.com/st--/annotate_equations/blob/main/examples/demo_manual_annotate_article.tex). For further examples, see https://github.com/synercys/annotated_latex_equations/.
+Two versions, one [as Beamer slides with transitions](https://github.com/st--/annotate-equations/blob/main/examples/demo_manual_annotate_beamer.tex), one [as an article](https://github.com/st--/annotate-equations/blob/main/examples/demo_manual_annotate_article.tex). For further examples, see https://github.com/synercys/annotated_latex_equations/.
 
 ### Giving all highlight boxes the same height
 
