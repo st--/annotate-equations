@@ -7,6 +7,18 @@
 \ProvidesPackage{annotate_equations}
   [2022/02/09 v0.01 LaTeX package for easily annotating equations]
 
+%%% lualatex compatibility, from https://tex.stackexchange.com/a/351520/171664
+\RequirePackage{ifluatex}
+\ifluatex
+\RequirePackage{luatex85}
+\RequirePackage{pdftexcmds}
+  \makeatletter
+  \let\pdfstrcmp\pdf@strcmp
+  \let\pdffilemoddate\pdf@filemoddate
+  \makeatother
+\fi
+%%%
+
 \RequirePackage{tikz}
 \RequirePackage{xcolor}
 
@@ -134,6 +146,7 @@
   \tl_set:Nx #1 {\clist_item:Nn #2 { 1 } }
  }
 \ExplSyntaxOff
+%%%
 
 \newcommand{\annotate}[4][]{%
     \begingroup% %%% so we don't leak the \def's below
