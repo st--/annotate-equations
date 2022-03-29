@@ -1,8 +1,15 @@
 # Annotate equations in LaTeX using TikZ
 
+Author: ST John, http://www.infinitecuriosity.org/
+License: MIT
+
+This package provides commands for highlighting & marking terms within equations and then adding annotations to the equations (based on TikZ).
+
+Inspired by Sibin Mohan's https://github.com/synercys/annotated_latex_equations/
+
 ## A package with reusable commands
 
-![output of annotated equation](examples/example_annotation_package.png)
+![rendering of annotated equation](examples/example_annotation_package.png)
 
 Using [`annotate_equations.sty`](https://github.com/st--/annotate-equations/blob/main/annotate_equations.sty), an equation can easily be annotated as follows:
 ```latex
@@ -53,7 +60,7 @@ Simply add a `\mathstrut` within the colorbox:
 +\newcommand{\highlight}[2]{\colorbox{#1!17}{$\mathstrut #2$}}
 ```
 
-![output of annotated equation with equal-height highlights](examples/example_annotation_equal_height.png)
+![rendering of annotated equation with equal-height highlights](examples/example_annotation_equal_height.png)
 
 ## Much more information...
 
