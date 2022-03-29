@@ -9,7 +9,9 @@ Please report any bugs, issues, contribute changes & improvements on https://git
 
 Package author: ST John, http://www.infinitecuriosity.org/
 
-License: MIT
+License: [MIT](LICENSE)
+
+[Documentation](annotate-equations.pdf)
 
 ## A package with reusable commands
 
