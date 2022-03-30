@@ -1,5 +1,7 @@
 # Annotate equations in LaTeX using TikZ
 
+( [Documentation](annotate-equations.pdf) | License: [MIT](LICENSE) | [CTAN](https://ctan.org/pkg/annotate-equations) )
+
 This package provides commands that make it easy to highlight terms in equations & add annotation labels (based on TikZ).
 Should work with pdflatex as well as lualatex.
 
@@ -9,9 +11,6 @@ Please report any bugs, issues, contribute changes & improvements on https://git
 
 Package author: ST John, http://www.infinitecuriosity.org/
 
-License: [MIT](LICENSE)
-
-[Documentation](annotate-equations.pdf)
 
 ## A package with reusable commands
 
