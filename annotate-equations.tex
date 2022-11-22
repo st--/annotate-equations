@@ -63,7 +63,7 @@ or
 to define the target of an annotation within your equation. \verb|\eqnmarkbox| adds background shading, whereas \verb|\eqnmark| changes the text color.
 (You can also use
 \verb|\tikzmarknode{|\cmdoption{node name}\verb|}{|\cmdoption{equation term(s)}\verb|}|,
-but this is likely to end up with the arrow tip too close to the target.)
+but this is likely to end up with the arrow tip too close to the target, so you may want to also pass the \texttt{outer ysep} option, see \cref{sec:outerysep}.)
 %
 \begin{LTXexample}[text outside listing,lefthand width=1in]
 \begin{equation*}
@@ -96,7 +96,7 @@ For \cmdoption{annotate keys}, see \cref{sec:annotate-keys}.
 \noindent
 %
 \label{sec:tikz-options}
-You generally need to manually adjust the \texttt{yshift} to move the annotations to an appropriate distance above (or negative values for below) the equation.
+You generally need to manually adjust the \texttt{yshift} to move the annotations to an appropriate distance above (or negative values for below) the equation. If you want an annotation below the equation, with negative \texttt{yshift}, remember to also pass the \texttt{below} option (see \cref{sec:annotate-keys}).
 (You can also adjust \texttt{xshift} if needed, also positive or negative.)
 
 The annotation picks the same text color as given to \verb|\eqnmarkbox| or \verb|\eqnmark|, but you can also override it using \texttt{color} option.
@@ -244,6 +244,7 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 \noindent
 %
 
+
 \section{Recommendations, tips \& tricks}
 
 \subsection{Use \texttt{\textbackslash{}colorlet} for consistent, easily changeable colors}
@@ -273,12 +274,46 @@ Here is a manual work-around:
 \end{LTXexample}
 \noindent
 
+\subsection{Relations such as ``$=$''}
+\label{sec:mathrel}
+
+Wrapping a mathematical relation symbol such as {\color{blue}$=$} in, for example, \texttt{\textbackslash{}tikzmarknode}, breaks how \TeX determines spacing in equations:
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\[
+a \tikzmarknode{node1}{=} b
+\]
+\annotate[yshift=-1em]{below}{node1}{equality}
+\end{LTXexample}
+\noindent
+This can be fixed by wrapping the \texttt{\textbackslash{}tikzmarknode} in \texttt{\textbackslash{}mathrel}:
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\[
+a \mathrel{\tikzmarknode{node1}{=}} b
+\]
+\annotate[yshift=-1em]{below}{node1}{equality}
+\end{LTXexample}
+
+\subsection{Extra spacing between \texttt{\textbackslash{}tikzmarknode} and arrow}
+\label{sec:outerysep}
+
+If you want more space between arrow tip and annotated term, you can pass the \texttt{outer ysep} option to \texttt{\textbackslash{}tikzmarknode}:
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\[
+a \mathrel{\tikzmarknode[outer ysep=5pt]{node1}{=}} b
+\]
+\annotate[yshift=-1em]{below}{node1}{equality}
+\end{LTXexample}
+
+
+
 \section{Known issues}
 
 \begin{itemize}
-    \item \texttt{label above}/\texttt{label below} not implemented for \verb|\annotate|.
+    \item \texttt{label above}/\texttt{label below} is not implemented for \verb|\annotate|.
 
     \item Formatting only covers first line in multi-line annotation texts (see \cref{sec:multiline}).
+    \item Annotations of mathematical relations require some manual patching to get the correct surrounding spacing (see \cref{sec:mathrel}).
+
 \end{itemize}
 
 \end{document}
