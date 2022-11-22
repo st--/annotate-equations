@@ -61,7 +61,7 @@ or
 to define the target of an annotation within your equation. \verb|\eqnmarkbox| adds background shading, whereas \verb|\eqnmark| changes the text color.
 (You can also use
 \verb|\tikzmarknode{|\cmdoption{node name}\verb|}{|\cmdoption{equation term(s)}\verb|}|,
-but this is likely to end up with the arrow tip too close to the target.)
+but this is likely to end up with the arrow tip too close to the target, so you may want to also pass the \texttt{outer ysep} option, see \cref{sec:outerysep}.)
 %
 \begin{LTXexample}[text outside listing,lefthand width=1in]
 \begin{equation*}
@@ -292,6 +292,7 @@ a \mathrel{\tikzmarknode{node1}{=}} b
 \end{LTXexample}
 
 \subsection{Extra spacing between \texttt{\textbackslash{}tikzmarknode} and arrow}
+\label{sec:outerysep}
 
 If you want more space between arrow tip and annotated term, you can pass the \texttt{outer ysep} option to \texttt{\textbackslash{}tikzmarknode}:
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
