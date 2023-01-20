@@ -217,10 +217,11 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 
 \subsection{Default formatting of annotation labels}
 
-\verb|\eqnannotationtext| is a one-argument command that gets the annotation text as an argument and can be used to have consistent formatting:
+\verb|\eqnannotationfont| is a one-argument command that feeds into the
+\texttt{font} field of tikz and can be used to have consistent formatting:
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 % package default:
-\renewcommand{\eqnannotationtext}[1]{\sffamily\footnotesize#1\strut}  
+\renewcommand{\eqnannotationfont}{\sffamily\footnotesize}
 
 \begin{equation*}
     \eqnmarkbox[blue]{v}{v}
@@ -229,11 +230,9 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 \vspace{1em}
 \end{LTXexample}
 \noindent
-%
-(The \verb|\strut| has a similar effect to \verb|\mathstrut| in \verb|\eqnhighlightheight|.)
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
-\renewcommand{\eqnannotationtext}[1]{\bfseries\small#1}  
+\renewcommand{\eqnannotationfont}{\bfseries\small}
 
 \begin{equation*}
     \eqnmarkbox[blue]{v}{v}
@@ -242,7 +241,32 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 \vspace{1em}
 \end{LTXexample}
 \noindent
+
+\verb|\eqnannotationstrut| is defined to be a strut to provide minimum distance
+from text to the surrounding diagrams. By default it is \verb|\strut|, which has
+a similar effect to \verb|\mathstrut| in \verb|\eqnhighlightheight|.
+
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+% Default
+\renewcommand{\eqnannotationstrut}{\strut}
+\begin{equation*}
+	\eqnmarkbox[blue]{v}{v}
+\end{equation*}
+\annotate[yshift=-0.5em]{below}{v}{velocity}
+\vspace{1em}
+\end{LTXexample}
+\noindent
 %
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+	\renewcommand{\eqnannotationstrut}{}
+
+	\begin{equation*}
+    \eqnmarkbox[blue]{v}{v}
+	\end{equation*}
+	\annotate[yshift=-0.5em]{below}{v}{velocity}
+	\vspace{1em}
+\end{LTXexample}
+\noindent
 
 
 \section{Recommendations, tips \& tricks}
@@ -263,7 +287,7 @@ Possible, but a bit annoying. By default, the formatting only covers the first l
 \end{LTXexample}
 \noindent
 %
-Here is a manual work-around:
+Here is a manual work-around: (obsolete)
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 \begin{equation*}
@@ -311,7 +335,6 @@ a \mathrel{\tikzmarknode[outer ysep=5pt]{node1}{=}} b
 \begin{itemize}
     \item \texttt{label above}/\texttt{label below} is not implemented for \verb|\annotate|.
 
-    \item Formatting only covers first line in multi-line annotation texts (see \cref{sec:multiline}).
     \item Annotations of mathematical relations require some manual patching to get the correct surrounding spacing (see \cref{sec:mathrel}).
 
 \end{itemize}
