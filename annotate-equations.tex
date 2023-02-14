@@ -218,7 +218,7 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 \subsection{Default formatting of annotation labels}
 
 \verb|\eqnannotationfont| is a one-argument command that feeds into the
-\texttt{font} field of tikz and can be used to have consistent formatting:
+\texttt{font} field of TikZ and can be used to have consistent formatting:
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 % package default:
 \renewcommand{\eqnannotationfont}{\sffamily\footnotesize}
@@ -242,61 +242,37 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 \end{LTXexample}
 \noindent
 
-\verb|\eqnannotationstrut| is defined to be a strut to provide minimum distance
-from text to the surrounding diagrams. By default it is \verb|\strut|, which has
-a similar effect to \verb|\mathstrut| in \verb|\eqnhighlightheight|.
+\verb|\eqnannotationstrut| is defined to be a strut (zero-width height) to
+provide minimum distance between the text and the corresponding arrow line. By
+default it is \verb|\strut|, which has, which has a similar effect to
+\verb|\mathstrut| in \verb|\eqnhighlightheight|.
 
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 % Default
 \renewcommand{\eqnannotationstrut}{\strut}
 \begin{equation*}
-	\eqnmarkbox[blue]{v}{v}
+	\eqnmarkbox[blue]{size}{s}
 \end{equation*}
-\annotate[yshift=-0.5em]{below}{v}{velocity}
+\annotate[yshift=-0.5em]{below}{size}{The size}
 \vspace{1em}
 \end{LTXexample}
 \noindent
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
-	\renewcommand{\eqnannotationstrut}{}
+\renewcommand{\eqnannotationstrut}{}
 
-	\begin{equation*}
-    \eqnmarkbox[blue]{v}{v}
-	\end{equation*}
-	\annotate[yshift=-0.5em]{below}{v}{velocity}
-	\vspace{1em}
+\begin{equation*}
+  \eqnmarkbox[blue]{size}{s}
+\end{equation*}
+\annotate[yshift=-0.5em]{below}{size}{The size}
+\vspace{1em}
 \end{LTXexample}
-\noindent
 
 
 \section{Recommendations, tips \& tricks}
 
 \subsection{Use \texttt{\textbackslash{}colorlet} for consistent, easily changeable colors}
 
-\subsection{Line breaks within annotations}
-\label{sec:multiline}
-
-Possible, but a bit annoying. By default, the formatting only covers the first line:
-%
-\begin{LTXexample}[text outside listing,lefthand width=0.5in]
-\begin{equation*}
-    \eqnmarkbox[blue]{h}{h}
-\end{equation*}
-\annotate[yshift=-0.5em]{below}{h}{Planck\\constant}
-\vspace{1em}
-\end{LTXexample}
-\noindent
-%
-Here is a manual work-around: (obsolete)
-%
-\begin{LTXexample}[text outside listing,lefthand width=0.5in]
-\begin{equation*}
-    \eqnmarkbox[blue]{h}{h}
-\end{equation*}
-\annotate[yshift=-0.5em]{below}{h}{Planck\\\sffamily\footnotesize constant}
-\vspace{1em}
-\end{LTXexample}
-\noindent
 
 \subsection{Relations such as ``$=$''}
 \label{sec:mathrel}

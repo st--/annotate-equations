@@ -36,7 +36,7 @@
 \newcommand{\eqnhighlightshade}{17}  % light
 %\renewcommand{\eqnhighlightshade}{47}  % dark
 
-\newcommand{\eqnannotationstrut}{\strut}
+\newcommand{\eqnannotationstrut}{\strut} % Package default
 \newcommand{\eqnannotationfont}{\sffamily\footnotesize}
 
 
@@ -127,8 +127,9 @@
     \def\myEAcolor{\usevalue{\myEAmarkOne}}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
         % default anchor is at center
-		\node[anchor=\swapNorthSouth{\EAmarkanchor},color=\myEAcolor!85,#1,
-			font=\eqnannotationfont]  % color blended with white to 85%, any (optional) extra args #1
+		\node[anchor=\swapNorthSouth{\EAmarkanchor},color=\myEAcolor!85,
+			font=\eqnannotationfont,#1
+			]  % color blended with white to 85%, any (optional) extra args #1
             (\eqnannotateCurrentNode)   % use counter-based "local node"
             at ($(\myEAmarkOne.\EAmarkanchor)!0.5!(\myEAmarkTwo.\EAmarkanchor)$)  % centered between the two nodes
             {\myEAtext\eqnannotationstrut};
