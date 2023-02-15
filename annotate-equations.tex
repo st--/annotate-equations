@@ -154,6 +154,7 @@ Color is picked from the first of the two nodes.
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 \renewcommand{\eqnhighlightheight}{}  % package default
+
 \begin{equation*}
     \eqnmarkbox[red]{hbar}{\hbar} \eqnmarkbox[blue]{q}{q}
 \end{equation*}
@@ -162,6 +163,7 @@ Color is picked from the first of the two nodes.
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 \renewcommand{\eqnhighlightheight}{\mathstrut}  % 0-width "constant" height
+
 \begin{equation*}
     \eqnmarkbox[red]{hbar}{\hbar} \eqnmarkbox[blue]{q}{q}
 \end{equation*}
@@ -175,6 +177,7 @@ Note that in some cases \verb|\mathstrut| might not be enough, as in the introdu
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 \renewcommand{\eqnhighlightheight}{\mathstrut}  % 0-width "constant" height
+
 \begin{equation*}
     \eqnmarkbox[red]{Hhat}{\hat{H}} \eqnmarkbox[blue]{Psi}{\Psi}
 \end{equation*}
@@ -185,6 +188,7 @@ You can create custom 0-width characters using \verb|\vphantom|:
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 \renewcommand{\eqnhighlightheight}{\vphantom{\hat{H}}\mathstrut}  % custom 0-width height
+
 \begin{equation*}
     \eqnmarkbox[red]{Hhat}{\hat{H}} \eqnmarkbox[blue]{Psi}{\Psi}
 \end{equation*}
@@ -199,6 +203,7 @@ You can create custom 0-width characters using \verb|\vphantom|:
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 \renewcommand{\eqnhighlightshade}{17}  % package default
+
 \begin{equation*}
     \eqnmarkbox[red]{hbar}{\hbar} \eqnmarkbox[blue]{q}{q}
 \end{equation*}
@@ -209,6 +214,7 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 %
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 \renewcommand{\eqnhighlightshade}{47}  % 0 is white, 100 is solid color
+
 \begin{equation*}
     \eqnmarkbox[red]{hbar}{\hbar} \eqnmarkbox[blue]{q}{q}
 \end{equation*}
@@ -219,8 +225,7 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 
 \verb|\eqnannotationfont| sets the \texttt{font} field of the TikZ annotation label and can be re-set to change its formatting:
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
-% package default:
-\renewcommand{\eqnannotationfont}{\sffamily\footnotesize}
+\renewcommand{\eqnannotationfont}{\sffamily\footnotesize}  % package default
 
 \begin{equation*}
     \eqnmarkbox[blue]{v}{v}
@@ -248,6 +253,7 @@ default it is \verb|\strut|, which has a similar effect to
 
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 \renewcommand{\eqnannotationstrut}{\strut}  % package default
+
 \begin{equation*}
 	\eqnmarkbox[blue]{size}{s}
 \end{equation*}
