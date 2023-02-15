@@ -36,7 +36,8 @@
 \newcommand{\eqnhighlightshade}{17}  % light
 %\renewcommand{\eqnhighlightshade}{47}  % dark
 
-\newcommand{\eqnannotationtext}[1]{\sffamily\footnotesize#1\strut} %%% TODO remove textsf/footnotesize/strut?
+\newcommand{\eqnannotationstrut}{\strut} % Package default
+\newcommand{\eqnannotationfont}{\sffamily\footnotesize}
 
 
 \providecommand\EAmarkanchor{north} % default set to "above"
@@ -126,10 +127,12 @@
     \def\myEAcolor{\usevalue{\myEAmarkOne}}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
         % default anchor is at center
-        \node[anchor=\swapNorthSouth{\EAmarkanchor},color=\myEAcolor!85,#1]  % color blended with white to 85%, any (optional) extra args #1
+		\node[anchor=\swapNorthSouth{\EAmarkanchor},color=\myEAcolor!85,
+			font=\eqnannotationfont,#1
+			]  % color blended with white to 85%, any (optional) extra args #1
             (\eqnannotateCurrentNode)   % use counter-based "local node"
             at ($(\myEAmarkOne.\EAmarkanchor)!0.5!(\myEAmarkTwo.\EAmarkanchor)$)  % centered between the two nodes
-            {\eqnannotationtext{\myEAtext}};
+            {\myEAtext\eqnannotationstrut};
         % double arrow to two uses within the equation:
         \draw [<->,color=\myEAcolor] (\myEAmarkOne.\EAmarkanchor) |- ([yshift=0.1ex] \eqnannotateCurrentNode.\EAlabelanchor) -| (\myEAmarkTwo.\EAmarkanchor);  % from node 1 via annotation to node 2, with anchor #6 each
     \end{tikzpicture}%
@@ -167,11 +170,12 @@
     %
     \def\myEAxshift{\EAxshift{\EAwesteast}}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
-        \node[anchor=\swapNorthSouth{\EAmarkanchor} \swapWestEast{\EAwesteast},color=\myEAcolor!85,#1] % TODO for some reason, passing #1 through command doesn't work...
+		\node[anchor=\swapNorthSouth{\EAmarkanchor} \swapWestEast{\EAwesteast},
+			color=\myEAcolor!85,font=\eqnannotationfont,#1] % TODO for some reason, passing #1 through command doesn't work...
                 % anchor=west: align left edge of text on top of tikzmark in equation
                 % should be north west for below and south west for above ...
             (\eqnannotateCurrentNode) at (\myEAmark.\EAmarkanchor)  % \EAmarkanchor north: above the equation, south: below
-            {\eqnannotationtext{\myEAtext}};
+            {\myEAtext\eqnannotationstrut};
         \foreach \EAmark in \myEAmarks
         \draw [color=\myEAcolor] (\EAmark.\EAmarkanchor)  % arrow from the equation
                 % \EAmarkanchor north: above the equation, south: below
