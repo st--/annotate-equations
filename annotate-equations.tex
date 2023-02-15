@@ -217,8 +217,7 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 
 \subsection{Default formatting of annotation labels}
 
-\verb|\eqnannotationfont| is a one-argument command that feeds into the
-\texttt{font} field of TikZ and can be used to have consistent formatting:
+\verb|\eqnannotationfont| sets the \texttt{font} field of the TikZ annotation label and can be re-set to change its formatting:
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
 % package default:
 \renewcommand{\eqnannotationfont}{\sffamily\footnotesize}
@@ -244,12 +243,11 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 
 \verb|\eqnannotationstrut| is defined to be a strut (zero-width height) to
 provide minimum distance between the text and the corresponding arrow line. By
-default it is \verb|\strut|, which has, which has a similar effect to
+default it is \verb|\strut|, which has a similar effect to
 \verb|\mathstrut| in \verb|\eqnhighlightheight|.
 
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
-% Default
-\renewcommand{\eqnannotationstrut}{\strut}
+\renewcommand{\eqnannotationstrut}{\strut}  % package default
 \begin{equation*}
 	\eqnmarkbox[blue]{size}{s}
 \end{equation*}
