@@ -30,11 +30,14 @@
 \author{ST John}
 \date{\url{https://github.com/st--/annotate-equations}}
 
+
 \begin{document}
 
 \maketitle
 
-\section{Introduction}
+
+
+%\section{Introduction}
 
 This package is there to make it easier to make annotated equations in \LaTeX, such as in this example:
 \begin{LTXexample}[]
@@ -51,6 +54,10 @@ This package is there to make it easier to make annotated equations in \LaTeX, s
 There is still a bit of manual tweaking required (such as adding vertical space before/after the equation), but hopefully this package will already make it a bit more inviting to annotate your equations!
 
 Note that this package relies on TikZ's \texttt{remember picture} option and therefore you have to compile your \LaTeX{} document at least twice to get everything in the right place (or just use \texttt{latexmk}!).
+
+
+\tableofcontents
+
 
 \section{Marking annotation targets within your equation}
 
@@ -73,6 +80,7 @@ but this is likely to end up with the arrow tip too close to the target, so you 
 \end{equation*}
 \end{LTXexample}
 \noindent
+
 
 \section{Simple annotations}
 \label{sec:annotate}
@@ -128,6 +136,7 @@ One annotation can point to multiple targets, and multiple annotations can point
 \noindent
 %
 
+
 \section{Double annotations}
 \label{sec:annotatetwo}
 
@@ -145,6 +154,7 @@ One annotation can point to multiple targets, and multiple annotations can point
 \noindent
 %
 Color is picked from the first of the two nodes.
+
 
 \section{Package options}
 
@@ -222,6 +232,7 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 \noindent
 
 \subsection{Default formatting of annotation labels}
+\label{sec:eqnannotationfont}
 
 \verb|\eqnannotationfont| sets the \texttt{font} field of the TikZ annotation label and can be re-set to change its formatting:
 \begin{LTXexample}[text outside listing,lefthand width=0.5in]
@@ -318,5 +329,24 @@ a \mathrel{\tikzmarknode[outer ysep=5pt]{node1}{=}} b
     \item Annotations of mathematical relations require some manual patching to get the correct surrounding spacing (see \cref{sec:mathrel}).
 
 \end{itemize}
+
+
+\section{Backwards-incompatible changes}
+
+\subsection*{v0.2.0}
+
+\subsubsection*{\texttt{\textbackslash{}eqnannotationtext} removed}
+
+To make it easier to format multiline annotations, version 0.2.0 introduced the \verb|\eqnannotationfont| and \verb|\eqnannotationstrut| (zero-argument) commands (see \cref{sec:eqnannotationfont}).
+
+In exchange, the \verb|\eqnannotationtext| (one-argument) command was removed. To upgrade, replace for example
+\begin{tcblisting}{listing only}
+    \renewcommand{\eqnannotationtext}[1]{\sffamily\tiny#1\strut}
+\end{tcblisting}
+with
+\begin{tcblisting}{listing only}
+    \renewcommand{\eqnannotationfont}{\sffamily\tiny}
+    \renewcommand{\eqnannotationstrut}{\strut}
+\end{tcblisting}
 
 \end{document}
