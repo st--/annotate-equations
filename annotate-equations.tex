@@ -26,7 +26,7 @@
   text above listing,
   #1}
 
-\title{\texttt{annotate-equations.sty}}
+\title{\texttt{annotate-equations.sty}, v.0.2.1}
 \author{ST John}
 \date{\url{https://github.com/st--/annotate-equations}}
 
@@ -256,6 +256,18 @@ By redefining this command, you can change the ``alpha'' value of the highlight:
 \vspace{1em}
 \end{LTXexample}
 \noindent
+%
+Alternatively, you can also change the style of \verb|annotate equations/text|:
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\tikzset{annotate equations/text/.style={font=\bfseries\small}}
+
+\begin{equation*}
+    \eqnmarkbox[blue]{v}{v}
+\end{equation*}
+\annotate[yshift=-0.5em]{below}{v}{velocity}
+\vspace{1em}
+\end{LTXexample}
+\noindent
 
 \verb|\eqnannotationstrut| is defined to be a strut (zero-width height) to
 provide minimum distance between the text and the corresponding arrow line. By
@@ -283,6 +295,32 @@ default it is \verb|\strut|, which has a similar effect to
 \vspace{1em}
 \end{LTXexample}
 
+
+\subsection{Customize style}
+
+You can change the style of the annotation arrow line by setting the style of \verb|annotate equations/arrow|:
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\tikzset{annotate equations/arrow/.style={color=ForestGreen, >=latex', very thick, dashed}}
+
+\begin{equation*}
+  \eqnmarkbox[blue]{size}{s} = \eqnmarkbox[red]{other}{x}
+\end{equation*}
+\annotate[yshift=-0.5em]{below}{size}{The size}
+\annotatetwo[yshift=1em]{above}{size}{other}{the same}
+\end{LTXexample}
+\noindent
+Note that it applies to all \verb|\annotate| and \verb|\annotatetwo| arrows within the scope.
+
+You can also use this to change the arrow direction:
+\begin{LTXexample}[text outside listing,lefthand width=0.5in]
+\begin{equation*}
+  \eqnmarkbox[blue]{size}{s} = \eqnmarkbox[red]{other}{x}
+\end{equation*}
+\tikzset{annotate equations/arrow/.style={->}}
+\annotatetwo[yshift=1em]{above}{size}{other}{one and}
+\tikzset{annotate equations/arrow/.style={<-}}
+\annotatetwo[yshift=-1em]{below, label below}{size}{other}{the same}  % note that the "direction" of the arrow is from first to second mark
+\end{LTXexample}
 
 \section{Recommendations, tips \& tricks}
 
