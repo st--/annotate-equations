@@ -5,7 +5,7 @@
 % 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{annotate-equations}
-  [2023/05/05 v0.2.1 easily annotate equations using TikZ]
+  [2023/05/06 v0.2.2 easily annotate equations using TikZ]
 
 %%% lualatex compatibility, from https://tex.stackexchange.com/a/351520/171664
 \RequirePackage{ifluatex}
@@ -170,6 +170,9 @@
     \colorlet{currentcolor}{.}
     \def\myEAcolor{\usevalue{\myEAmark}}%
     %
+    \def\EAspace{ }  % workaround: did not find any other way of getting a space into \myEAlabelanchor without upsetting LaTeX/PGF/... somehow
+    \edef\myEAlabelanchor{\EAlabelanchor\EAspace\EAwesteast}%
+    %
     %
     \def\myEAxshift{\EAxshift{\EAwesteast}}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
@@ -182,7 +185,7 @@
         \foreach \EAmark in \myEAmarks
         \draw [color=\myEAcolor, annotate equations/arrow] (\EAmark.\EAmarkanchor)  % arrow from the equation
                 % \EAmarkanchor north: above the equation, south: below
-            |- ([xshift=\myEAxshift,yshift=0.1ex] \eqnannotateCurrentNode.south \EAwesteast);
+            |- ([xshift=\myEAxshift,yshift=0.1ex] \eqnannotateCurrentNode.\myEAlabelanchor);
                 % - south east: we want line to end at bottom right of annotation text;
                 % - negative xshift makes it a little bit shorter;
                 % - yshift for aesthetics (\strut is ever so slightly too tall).
