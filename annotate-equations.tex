@@ -327,7 +327,7 @@ You can also use this to change the arrow direction:
 \subsection{Use \texttt{\textbackslash{}colorlet} for consistent, easily changeable colors}
 
 
-\subsection{Relations such as ``$=$''}
+\subsection{Mathematical relations such as ``$=$''}
 \label{sec:mathrel}
 
 Wrapping a mathematical relation symbol such as {\color{blue}$=$} in, for example, \texttt{\textbackslash{}tikzmarknode}, breaks how \TeX{} determines spacing in equations:
@@ -384,5 +384,48 @@ with
     \renewcommand{\eqnannotationfont}{\sffamily\tiny}
     \renewcommand{\eqnannotationstrut}{\strut}
 \end{tcblisting}
+
+
+\section{Examples}
+
+The following examples are based on responses to GitHub issues: if you have any other requests for how to annotate questions, feel free to open an issue yourself on \url{https://github.com/st--/annotate-equations/issues}.
+
+\subsection{Annotating a variable in multiple equations simultaneously}
+
+\textit{For discussion, see \href{https://github.com/st--/annotate-equations/issues/25}{GitHub issue \#25}.}
+\vspace{1em}
+
+With two separate \verb|equation| environments:
+\begin{LTXexample}[text outside listing,lefthand width=1.5in]
+\begin{equation}
+    b \eqnmarkbox[blue]{a1}{a} = c d
+\end{equation}
+\vspace{1.5em}  % make some space for annotation
+\begin{equation}
+    \eqnmarkbox[red]{a2}{a} e = f g
+\end{equation}
+\begin{tikzpicture}[overlay,remember picture]
+    \coordinate (a2above) at (a2.north);
+\end{tikzpicture}
+\annotate[yshift=-0.4em]{below}{a1,a2above}{some variable}
+\end{LTXexample}
+Because \verb|\annotate| draws arrows from the north-anchors of the given nodes (for the \verb|{below}| option), we manually create an invisible point node at the correct place for the variables in the equation below the annotation.
+
+It likewise works within a single \verb|align| environment:
+\begin{LTXexample}[text outside listing,lefthand width=1.5in]
+\begin{align}
+    w \eqnmarkbox[blue]{b1}{b} &= c d \\[2.2em]  % make some space for annotation
+    l \eqnmarkbox[red]{b2}{b} &= f g
+\end{align}
+\begin{tikzpicture}[overlay,remember picture]
+    \coordinate (b2above) at (b2.north);
+\end{tikzpicture}
+\annotate[yshift=-0.2em]{below}{b1,b2above}{another variable}
+\end{LTXexample}
+In your own use-case, you may have to adjust the spacing and shifts as needed.
+
+\vspace{1em}
+
+{\it I am not sure if the \verb|[overlay,remember picture]| option to the \verb|tikzpicture| environment is actually needed; in these examples, it seems to work fine without, but if you encounter any problems, try to put it back. (And if you can confirm it will never be needed, please do re-open the GitHub issue and comment there to let me know!)}
 
 \end{document}
