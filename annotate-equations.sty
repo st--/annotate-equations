@@ -125,7 +125,7 @@
     \pgfkeys{/eqnannotate, #2}% %%% all configuration options
     \def\myEAmarkOne{#3}%
     \def\myEAmarkTwo{#4}%
-    \colorlet{currentcolor}{.}
+    \colorlet{currentcolor}{.}%
     \def\myEAtext{#5}%
     \def\myEAcolor{\usevalue{\myEAmarkOne}}%
     \begin{tikzpicture}[overlay,remember picture,>=stealth,nodes={align=left,inner ysep=1pt},<-]
@@ -161,16 +161,16 @@
     %
     %
     % #1: (optional) extra args for \node e.g. yshift=...
-    \pgfkeys{/eqnannotate, #2}
+    \pgfkeys{/eqnannotate, #2}%
     \def\myEAmarks{#3}%
     \extractfirst\myEAmark\myEAmarks% %%% get first node for color and annotation
     \def\myEAtext{#4}%
     %
     %
-    \colorlet{currentcolor}{.}
+    \colorlet{currentcolor}{.}%
     \def\myEAcolor{\usevalue{\myEAmark}}%
     %
-    \def\EAspace{ }  % workaround: did not find any other way of getting a space into \myEAlabelanchor without upsetting LaTeX/PGF/... somehow
+    \def\EAspace{ }% %%% workaround: did not find any other way of getting a space into \myEAlabelanchor without upsetting LaTeX/PGF/... somehow
     \edef\myEAlabelanchor{\EAlabelanchor\EAspace\EAwesteast}%
     %
     %
